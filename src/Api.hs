@@ -7,8 +7,11 @@ module Api
     , getPersonalStatementFull
     ) where
 
-
-import qualified Data.Text as T
+import           Data.Aeson
+import qualified Data.ByteString.Char8      as B
+import qualified Data.ByteString.Lazy.Char8 as BL
+import qualified Data.Text                  as T
+import           Network.HTTP.Conduit       (simpleHttp)
 
 import           Types
 import           Utils
@@ -17,7 +20,7 @@ import           Utils
 --------------------------------------------------------------------------------
 
 endpoint :: T.Text
-endpoint = "https://api.monobank.ua/"
+endpoint = "https://api.monobank.ua"
 
 -- Get a basic list of monobank currency rates.
 -- Information is cached and updated no more than once every 5 minutes.
@@ -25,9 +28,16 @@ endpoint = "https://api.monobank.ua/"
 -- GET /bank/currency
 getCurrencies :: IO [CurrencyPair]
 getCurrencies = do
-  putStrLn "getting currencies"
-  return $ []
-
+  let path = T.concat [endpoint, "/bank/currency"]
+  -- results <- fmap decodeEither $ simpleHttp (T.unpack path)
+  resp <- simpleHttp (T.unpack path)
+  let res = eitherDecode resp
+  case res of
+    Left err  -> do
+      putStrLn err
+      return $ []
+    Right val -> do
+      return $ val
 
 -- GET /personal/client-info
 getPersonalInfo = undefined

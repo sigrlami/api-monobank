@@ -16,10 +16,14 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     Api
+                     , Types
+                     , Utils
   build-depends:       base >= 4.7 && < 5
                      , aeson
                      , text
                      , time
+                     , http-conduit
+                     , bytestring
   default-language:    Haskell2010
 
 executable mnb-app
@@ -38,7 +42,7 @@ executable mnb-app
 
 test-suite mnb-app-test
   type:                exitcode-stdio-1.0
-  hs-source-dirs:      test
+  hs-source-dirs:      tests
   main-is:             Spec.hs
   build-depends:       base
                      , bytestring

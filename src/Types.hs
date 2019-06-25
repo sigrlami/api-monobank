@@ -23,13 +23,13 @@ data CurrencyPair =
   CurrencyPair
     { cpCurrencyCodeA :: Int     -- ^ Currency code from international identificator
     , cpCurrencyCodeB :: Int     -- ^ Currency code from international identificator
-    , cpDate          :: UTCTime -- ^ Timestamp for the currency pair information
-    , cpRateSell      :: Float   -- ^ Rate to sell currency
-    , cpRateBuy       :: Float   -- ^ Rate to buy currency
-    , cpRateCross     :: Float   -- ^
+    , cpDate          :: Int -- ^ Timestamp for the currency pair information
+    , cpRateSell      :: Maybe Float   -- ^ Rate to sell currency
+    , cpRateBuy       :: Maybe Float   -- ^ Rate to buy currency
+    , cpRateCross     :: Maybe Float   -- ^
     } deriving (Eq, Show, Generic)
 
 instance FromJSON CurrencyPair where
   parseJSON = genericParseJSON opts
     where
-      opts = defaultOptions { fieldLabelModifier = drop 2}
+      opts = defaultOptions { fieldLabelModifier = uncapFst . drop 2}
