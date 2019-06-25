@@ -9,8 +9,8 @@ import qualified Data.Text                   as T
 import           Data.Time.Clock
 import           System.Environment
 
-import qualified Api                         as MBApi
-import qualified Types                       as MBApi
+import qualified Monobank.Api                as MBApi
+import qualified Monobank.Types              as MBApi
 
 --------------------------------------------------------------------------------
 

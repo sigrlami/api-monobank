@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Api
+module Monobank.Api
     ( getCurrencies
     , getPersonalInfo
     , getPersonalStatement
@@ -13,9 +13,8 @@ import qualified Data.ByteString.Lazy.Char8 as BL
 import qualified Data.Text                  as T
 import           Network.HTTP.Conduit       (simpleHttp)
 
-import           Types
-import           Utils
-
+import           Monobank.Types
+import           Monobank.Utils
 
 --------------------------------------------------------------------------------
 

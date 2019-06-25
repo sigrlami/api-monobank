@@ -7,16 +7,16 @@
 {-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 
-module Types where
+module Monobank.Types where
 
 import           Data.Aeson
 import           Data.Aeson.TH
 import           Data.Maybe
-import qualified Data.Text     as T
+import qualified Data.Text      as T
 import           Data.Time
 import           GHC.Generics
 
-import           Utils
+import           Monobank.Utils
 
 -----------------------------------------------------------------
 
@@ -101,3 +101,35 @@ showCurrencyPair cp = do
 --   parseJSON = genericParseJSON opts
 --     where
 --       opts = defaultOptions { fieldLabelModifier = uncapFst . drop 2}
+
+--------------------------------------------------------------------------------
+
+data Account =
+  Account
+    { acId           :: T.Text    -- ^
+    , acBalance      :: Int       -- ^ Current balance
+    , acCreditLimit  :: Int       -- ^ Current credit limit available to user
+    , acCurrency     :: Currency  -- ^ Currency of the account
+    , acCashbackType :: T.Text    -- ^
+    } deriving (Eq, Show)
+
+data User =
+  User
+    { uName     :: String    -- ^ User's full name
+    , uAccounts :: [Account] -- ^ List of user accounts, by currency type
+    } deriving (Eq, Show)
+
+data Statement =
+  Statement
+    { stId              :: String   -- ^
+    , stTime            :: String   -- ^
+    , stDescription     :: String   -- ^
+    , stMCC             :: String   -- ^
+    , stHold            :: Bool     -- ^
+    , stAmount          :: Int      -- ^
+    , stOperationAmount :: Int      -- ^
+    , stCurrency        :: Currency -- ^
+    , stComissionRate   :: Int      -- ^
+    , stCashbackAmount  :: Int      -- ^
+    , balance           :: Int      -- ^
+    } deriving (Eq, Show)

@@ -1,9 +1,9 @@
 name:                api-monobank
-version:             0.1.0.0
+version:             0.1.0.1
 -- synopsis:
--- description:
+description:         Api client for popular Ukrainian bank - Monobank
 homepage:            https://github.com/sigrlami/api-monobank#readme
-license:             BSD3
+license:             MIT
 license-file:        LICENSE
 author:              Sergey Bushnyak
 maintainer:          sergey.bushnyak@sigrlami.eu
@@ -15,9 +15,9 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Api
-                     , Types
-                     , Utils
+  exposed-modules:     Monobank.Api
+                     , Monobank.Types
+                     , Monobank.Utils
   build-depends:       base >= 4.7 && < 5
                      , aeson
                      , text
