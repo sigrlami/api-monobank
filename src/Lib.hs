@@ -1,6 +1,11 @@
-module Lib
-    ( someFunc
+module Api
+    ( getCurrencies
     ) where
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+
+-- Get a basic list of monobank currency rates.
+-- Information is cached and updated no more than once every 5 minutes.
+-- GET /bank/currency
+getCurrencies :: IO [CurrencyPair]
+getCurrencies = do
+  putStrLn "getting currencies"
