@@ -24,6 +24,10 @@ library
                      , time
                      , http-conduit
                      , bytestring
+                     , servant
+                     , servant-client
+                     , http-client
+                     , http-client-tls
   default-language:    Haskell2010
 
 executable mnb-app
@@ -33,6 +37,7 @@ executable mnb-app
   build-depends:       base
                      , bytestring
                      , http-conduit
+                     , http-client
                      , aeson
                      , stm
                      , text
