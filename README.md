@@ -24,8 +24,41 @@ In the event of the exploitation of this API as corporate, the bank reserves the
 ## Public
 General information provided without authorization.
 
+| # |Path           | Type | Params |  Description         | Response | Notes|
+|---|---------------|------|--------|----------------------|----------|------|
+| 1 | /bank/currency| GET  |       | Get a basic list of monobank currency rates. Information is cached and updated no more than once every 5 minutes. | JSON | Response will be a json array with objects of 2 types
+
+
+```json
+   {
+    "currencyCodeA": 978,
+    "currencyCodeB": 840,
+    "date": 1561426807,
+    "rateBuy": 1.1249,
+    "rateSell": 1.1368
+  },
+  {
+    "currencyCodeA": 826,
+    "currencyCodeB": 980,
+    "date": 1561461569,
+    "rateCross": 33.2857
+  },
+```
+note the absence of `rateBuy`, `rateSell` in a second example.Inside client system automatically convert `int` base date into normalized `UTCTime` format.
+
+
 ## Private
 Information provided with authorization.
+
+| # |Path                  | Type | Params                        |  Description         | Response | Notes|
+|---|----------------------|------|-------------------------------| ---------------------|----------|------|
+| 1 | /personal/client-info| GET  |                               | Obtaining information about the client and the list of his accounts. Limit on the use of the function no more than 1 time in 60 seconds.| JSON |
+|   |                      |      | `X-Token`: string ; in header | Token for personal access to the API | |
+| 2 | /personal/statement  | GET  |  /{account}/{from}/{to}       | Receive an extract for the time from {to} to {to} time in seconds Unix time format. The maximum time for which it is possible to extract an extract is 31 days (2678400 seconds) Limit on the use of the function no more than 1 time in 60 seconds. | JSON |
+|   |                      |      | `X-Token` string; in `header` | Token for personal access to the API | |
+|   |                      |      | `account` string; in `path`   | Account ID from the Statement list list or 0 is a default account.
+|   |                      |      | `from` string; in `path`      | Start of the excerpt time
+|   |                      |      | `to` string; in `path`        | End time of the excerpt (if not, the current time will be used)
 
 ## Building
 
