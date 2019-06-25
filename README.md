@@ -113,3 +113,14 @@ Lead to response:
 ```
 Right (User {uName = "Paul Atreides", uAccounts = [Account {acId = "jTw-r2md_cykrO9vdNgNyQ", acBalance = 4446033, acCreditLimit = 10000000, acCurrencyCode = 980, acCashbackType = "UAH"},Account {acId = "8uZb22LO716bxAYRJ6FxG-ZA", acBalance = 17520, acCreditLimit = 0, acCurrencyCode = 840, acCashbackType = "None"},Account {acId = "6s-YdQTmX7MhndGGXPHEjg", acBalance = 5000, acCreditLimit = 0, acCurrencyCode = 978, acCashbackType = "None"}]})
 ```
+
+Getting transations avaialble with `getPersonalStatement''` function like this
+
+```haskell
+getPersonalStatement'' (Just "uBhtrIEUZDO6eJ5HPBa12lq0Y5e27lBsJMBLbbMVeqkM") "0" "2019-06-05 10:00:00" "2019-06-25 10:00:00"
+```
+where you can have date in normal, human-readable form. They are converted to Posix based Unix epoch string automatically. If you want to calculate Unix epoch on your own, use raw access function `getPersonalStatement'`:
+
+```haskell
+`getPersonalStatement' (Just "uBhtrIEUZDO6eJ5HPBa12lq0Y5e27lBsJMBLbbMVeqkM") "0" "1559728800" ""
+```

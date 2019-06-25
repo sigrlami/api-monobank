@@ -25,6 +25,8 @@ import qualified Data.ByteString.Lazy.Char8 as BL
 import           Data.Monoid
 import           Data.Proxy
 import qualified Data.Text                  as T
+import           Data.Time
+import           Data.Time.Clock.POSIX
 import           GHC.Generics
 import           Network.HTTP.Client        (Manager, newManager)
 import qualified Network.HTTP.Client        as C
@@ -111,6 +113,21 @@ getPersonalStatement' tkn accM fromM toM = do
   runClientM (getPersonalStatement tkn accM fromM toM) env
   where
     host = (BaseUrl Https endpoint 443 "")
+
+getPersonalStatement'' :: Maybe T.Text
+                      -> T.Text
+                      -> T.Text
+                      -> T.Text
+                      -> IO (Either ServantError Statement)
+getPersonalStatement'' tknM acc from to = do
+  mgr <- newManager tlsManagerSettings
+  let env   = ClientEnv mgr host Nothing
+      from' = T.init . T.pack . show . utcTimeToPOSIXSeconds $ (read (T.unpack from) :: UTCTime)
+      to'   = T.init . T.pack . show . utcTimeToPOSIXSeconds $ (read (T.unpack to)   :: UTCTime)
+  putStrLn $ show from'
+  runClientM (getPersonalStatement tknM acc from' to') env
+  where
+    host  = (BaseUrl Https endpoint 443 "")
 
 --------------------------------------------------------------------------------
 
