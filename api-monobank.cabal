@@ -1,5 +1,5 @@
 name:                api-monobank
-version:             0.1.0.1
+version:             0.1.1.0
 -- synopsis:
 description:         Api client for popular Ukrainian bank - Monobank
 homepage:            https://github.com/sigrlami/api-monobank#readme

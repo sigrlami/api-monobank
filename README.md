@@ -94,34 +94,20 @@ RUB/UAH
  - Buy:  0.378 ₴
  - Sell: 0.418₴
 
-EUR/USD
- - Buy:  1.1249 $
- - Sell: 1.1368$
-
-GBP/UAH
- - Cross: 33.32₴
-
-CHF/UAH
- - Cross: 26.9263₴
-
-BYN/UAH
- - Cross: 12.8902₴
-
-CAD/UAH
- - Cross: 19.8825₴
-
-CZK/UAH
- - Cross: 1.1669₴
-
-DKK/UAH
- - Cross: 4.0001₴
-
-HUF/UAH
- - Cross: 9.22e-2₴
-
-PLN/UAH
- - Cross: 7.012₴
-
 TRY/UAH
  - Cross: 4.5473₴
+
+...
+
+```
+
+Getting personal information with function `getPersonalInfo'` supply token
+
+```
+getPersonalInfo' (Just "bm90IHNvIGZhc3QgSm9obm55")
+```
+
+Lead to response:
+```
+Right (User {uName = "Paul Atreides", uAccounts = [Account {acId = "jTw-r2md_cykrO9vdNgNyQ", acBalance = 4446033, acCreditLimit = 10000000, acCurrencyCode = 980, acCashbackType = "UAH"},Account {acId = "8uZb22LO716bxAYRJ6FxG-ZA", acBalance = 17520, acCreditLimit = 0, acCurrencyCode = 840, acCashbackType = "None"},Account {acId = "6s-YdQTmX7MhndGGXPHEjg", acBalance = 5000, acCreditLimit = 0, acCurrencyCode = 978, acCashbackType = "None"}]})
 ```
