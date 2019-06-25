@@ -1,4 +1,6 @@
 # Monobank Api Client
+![Hackage](https://img.shields.io/hackage/v/api-monobank.svg)
+![Azure DevOps builds](https://img.shields.io/azure-devops/build/sigrlami/api-monobank/1.svg)
 
 Haskell client for MonoBank API services (https://api.monobank.ua/docs/)
 
