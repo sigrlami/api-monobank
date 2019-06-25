@@ -7,7 +7,7 @@ license:             BSD3
 license-file:        LICENSE
 author:              Sergey Bushnyak
 maintainer:          sergey.bushnyak@sigrlami.eu
-copyright:           Copyright: (c) 2017 Sergey Bushnyak
+copyright:           Copyright: (c) 2019 Sergey Bushnyak
 category:            Web
 build-type:          Simple
 extra-source-files:  README.md
@@ -15,12 +15,37 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Lib
+  exposed-modules:     Api
   build-depends:       base >= 4.7 && < 5
                      , aeson
                      , text
                      , time
   default-language:    Haskell2010
+
+executable mnb-app
+  hs-source-dirs:      app
+  main-is:             Main.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , bytestring
+                     , http-conduit
+                     , aeson
+                     , stm
+                     , text
+                     , time
+                     , api-monobank
+  default-language:    Haskell2010
+
+test-suite mnb-app-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       base
+                     , bytestring
+                     , hs-coindesk-api
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  default-language:    Haskell2010
+
 
 source-repository head
   type:     git

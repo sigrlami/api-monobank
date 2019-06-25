@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Api
     ( getCurrencies
     , getPersonalInfo
@@ -5,12 +7,17 @@ module Api
     , getPersonalStatementFull
     ) where
 
-import           Data.Text as T
+
+import qualified Data.Text as T
 
 import           Types
 import           Utils
 
+
 --------------------------------------------------------------------------------
+
+endpoint :: T.Text
+endpoint = "https://api.monobank.ua/"
 
 -- Get a basic list of monobank currency rates.
 -- Information is cached and updated no more than once every 5 minutes.
@@ -19,6 +26,7 @@ import           Utils
 getCurrencies :: IO [CurrencyPair]
 getCurrencies = do
   putStrLn "getting currencies"
+  return $ []
 
 
 -- GET /personal/client-info
