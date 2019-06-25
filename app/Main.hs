@@ -10,6 +10,7 @@ import           Data.Time.Clock
 import           System.Environment
 
 import qualified Api                         as MBApi
+import qualified Types                       as MBApi
 
 --------------------------------------------------------------------------------
 
@@ -22,11 +23,11 @@ main =
     case a of
       ["-t"]    -> do
         -- read token from file
-
         return ()
       otherwise -> do
-        putStrLn $ "monobank | Not tokenized API access available for currencies only"
-        putStrLn $ "monobank | Getting last currency prices"
-        mcurr <- MBApi.getCurrencies
-        putStrLn $ show $ mcurr
+        putStrLn $ "Monobank | Not tokenized API access available for currencies only"
+        putStrLn $ "Monobank | Getting last currency prices\n"
+        mcurrs <- MBApi.getCurrencies
+        --putStrLn $ show $ mcurrs
+        mapM_ MBApi.showCurrencyPair mcurrs
         return ()

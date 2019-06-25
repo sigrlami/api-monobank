@@ -53,7 +53,7 @@ Information provided with authorization.
 | # |Path                  | Type | Params                        |  Description         | Response | Notes|
 |---|----------------------|------|-------------------------------| ---------------------|----------|------|
 | 1 | /personal/client-info| GET  |                               | Obtaining information about the client and the list of his accounts. Limit on the use of the function no more than 1 time in 60 seconds.| JSON |
-|   |                      |      | `X-Token`: string ; in header | Token for personal access to the API | |
+|   |                      |      | `X-Token` string; `in header` | Token for personal access to the API | |
 | 2 | /personal/statement  | GET  |  /{account}/{from}/{to}       | Receive an extract for the time from {to} to {to} time in seconds Unix time format. The maximum time for which it is possible to extract an extract is 31 days (2678400 seconds) Limit on the use of the function no more than 1 time in 60 seconds. | JSON |
 |   |                      |      | `X-Token` string; in `header` | Token for personal access to the API | |
 |   |                      |      | `account` string; in `path`   | Account ID from the Statement list list or 0 is a default account.
