@@ -76,4 +76,52 @@ or simply `mnb-app` if you used `stack install` command
 ```
 $ mnb-app
 ```
-that will bring following output
+that will bring following output if runned without keys, currency info
+
+```
+Monobank | Not tokenized API access available for currencies only
+Monobank | Getting last currency prices
+
+USD/UAH
+ - Buy:  25.961 ₴
+ - Sell: 26.2357₴
+
+EUR/UAH
+ - Buy:  29.161 ₴
+ - Sell: 29.9294₴
+
+RUB/UAH
+ - Buy:  0.378 ₴
+ - Sell: 0.418₴
+
+EUR/USD
+ - Buy:  1.1249 $
+ - Sell: 1.1368$
+
+GBP/UAH
+ - Cross: 33.32₴
+
+CHF/UAH
+ - Cross: 26.9263₴
+
+BYN/UAH
+ - Cross: 12.8902₴
+
+CAD/UAH
+ - Cross: 19.8825₴
+
+CZK/UAH
+ - Cross: 1.1669₴
+
+DKK/UAH
+ - Cross: 4.0001₴
+
+HUF/UAH
+ - Cross: 9.22e-2₴
+
+PLN/UAH
+ - Cross: 7.012₴
+
+TRY/UAH
+ - Cross: 4.5473₴
+```

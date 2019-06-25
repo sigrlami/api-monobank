@@ -3,6 +3,7 @@ module Api
     , getPersonalInfo
     , getPersonalStatement
     , getPersonalStatementFull
+    , showCurrencyPair
     ) where
 
 import           Data.Text as T

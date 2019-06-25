@@ -31,6 +31,7 @@ getCurrencies = do
   let path = T.concat [endpoint, "/bank/currency"]
   -- results <- fmap decodeEither $ simpleHttp (T.unpack path)
   resp <- simpleHttp (T.unpack path)
+  --putStrLn $ show $ resp
   let res = eitherDecode resp
   case res of
     Left err  -> do
