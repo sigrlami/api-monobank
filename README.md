@@ -9,7 +9,8 @@ Haskell client for Monobank API [services](https://api.monobank.ua/docs/).
 1. [Introduction](#introduction)
 2. [Public API](#public)
 3. [Private API](#private)
-4. [Building library](#building)
+4. [Using library](#use)
+5. [Example](#example)
 
 ## Introduction
 
@@ -62,12 +63,12 @@ Information provided with authorization.
 |   |                      |      | `from` string; in `path`      | Start of the excerpt time
 |   |                      |      | `to` string; in `path`        | End time of the excerpt (if not, the current time will be used)
 
-## Building
+## Use
 
 - `src` - contains actual API that can be used in 3rd part apps
 - `app` - executable for CLI app that can be used to view current value or run continuosly
 
-Just build repository with `stack build` and use following
+Just build repository with `stack build`
 
 ```
 $ stack exec -- mnb-app
@@ -124,3 +125,9 @@ where you can have date in normal, human-readable form. They are converted to Po
 ```haskell
 `getPersonalStatement' (Just "bm90IHNvIGZhc3QgSm9obm55") "0" "1559728800" ""
 ```
+
+## Example
+
+Accumulated statement by month for the year. Implemented inside [Monolytics][https://github.com/sigrlami/monolytics] app with data collected by this API.
+
+![Balance Chart](assets/balance-chart.png "Balance Chart")
