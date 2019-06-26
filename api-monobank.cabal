@@ -46,6 +46,7 @@ executable mnb-app
                      , time
                      , api-monobank
                      , servant-elm
+                     , elm-export
   default-language:    Haskell2010
 
 test-suite mnb-app-test

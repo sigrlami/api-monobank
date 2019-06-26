@@ -7,6 +7,99 @@ import Http
 import String
 
 
+type alias User =
+    { uName : String
+    , uAccounts : List (Account)
+    }
+
+type alias Currency =
+    { isoCode : String
+    , isoNumericCode : Int
+    , decimalDigits : Int
+    , symbol : String
+    , name : String
+    }
+
+type alias Account =
+    { acId : String
+    , acBalance : Int
+    , acCreditLimit : Int
+    , acCurrencyCode : Int
+    , acCashbackType : String
+    }
+
+type alias Statement =
+    { stId : String
+    , stTime : String
+    , stDescription : String
+    , stMCC : String
+    , stHold : Bool
+    , stAmount : Int
+    , stOperationAmount : Int
+    , stCurrency : Int
+    , stComissionRate : Int
+    , stCashbackAmount : Int
+    , balance : Int
+    }
+
+type alias CurrencyPair =
+    { cpCurrencyCodeA : Currency
+    , cpCurrencyCodeB : Currency
+    , cpDate : Int
+    , cpRateSell : Maybe (Float)
+    , cpRateBuy : Maybe (Float)
+    , cpRateCross : Maybe (Float)
+    }
+
+decodeUser : Decoder User
+decodeUser =
+    decode User
+        |> required "uName" string
+        |> required "uAccounts" (list decodeAccount)
+
+decodeCurrency : Decoder Currency
+decodeCurrency =
+    decode Currency
+        |> required "isoCode" string
+        |> required "isoNumericCode" int
+        |> required "decimalDigits" int
+        |> required "symbol" string
+        |> required "name" string
+
+decodeAccount : Decoder Account
+decodeAccount =
+    decode Account
+        |> required "acId" string
+        |> required "acBalance" int
+        |> required "acCreditLimit" int
+        |> required "acCurrencyCode" int
+        |> required "acCashbackType" string
+
+decodeStatement : Decoder Statement
+decodeStatement =
+    decode Statement
+        |> required "stId" string
+        |> required "stTime" string
+        |> required "stDescription" string
+        |> required "stMCC" string
+        |> required "stHold" bool
+        |> required "stAmount" int
+        |> required "stOperationAmount" int
+        |> required "stCurrency" int
+        |> required "stComissionRate" int
+        |> required "stCashbackAmount" int
+        |> required "balance" int
+
+decodeCurrencyPair : Decoder CurrencyPair
+decodeCurrencyPair =
+    decode CurrencyPair
+        |> required "cpCurrencyCodeA" decodeCurrency
+        |> required "cpCurrencyCodeB" decodeCurrency
+        |> required "cpDate" int
+        |> required "cpRateSell" (maybe float)
+        |> required "cpRateBuy" (maybe float)
+        |> required "cpRateCross" (maybe float)
+
 getBankCurrency : Http.Request (List (CurrencyPair))
 getBankCurrency =
     Http.request

@@ -7,6 +7,9 @@ import           Control.Concurrent.STM.TVar
 import           Control.Monad               (forever)
 import qualified Data.Text                   as T
 import           Data.Time.Clock
+import           Elm                         (toElmDecoderSource,
+                                              toElmEncoderSource,
+                                              toElmTypeSource)
 import           Servant.Elm
 import           System.Environment
 
@@ -38,4 +41,15 @@ main =
 spec :: Spec
 spec =
   Spec ["MonobankApi"]
-       (defElmImports : generateElmForAPI (Proxy :: Proxy MBApi.MonobankAPI))
+       (  defElmImports
+         : toElmTypeSource    (Proxy :: Proxy MBApi.User)
+         : toElmTypeSource    (Proxy :: Proxy MBApi.Currency)
+         : toElmTypeSource    (Proxy :: Proxy MBApi.Account)
+         : toElmTypeSource    (Proxy :: Proxy MBApi.Statement)
+         : toElmTypeSource    (Proxy :: Proxy MBApi.CurrencyPair)
+         : toElmDecoderSource (Proxy :: Proxy MBApi.User)
+         : toElmDecoderSource (Proxy :: Proxy MBApi.Currency)
+         : toElmDecoderSource (Proxy :: Proxy MBApi.Account)
+         : toElmDecoderSource (Proxy :: Proxy MBApi.Statement)
+         : toElmDecoderSource (Proxy :: Proxy MBApi.CurrencyPair)
+         : generateElmForAPI (Proxy :: Proxy MBApi.MonobankAPI))
