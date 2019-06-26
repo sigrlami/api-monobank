@@ -7,6 +7,7 @@ import           Control.Concurrent.STM.TVar
 import           Control.Monad               (forever)
 import qualified Data.Text                   as T
 import           Data.Time.Clock
+import           Servant.Elm
 import           System.Environment
 
 import qualified Monobank.Api                as MBApi
@@ -21,8 +22,9 @@ main =
     a       <- getArgs
     timeVar <- newTVarIO (delay*1000)
     case a of
-      ["-t"]    -> do
-        -- read token from file
+      ["-ge"]    -> do
+        -- generate ELM API
+        specsToDir [spec] "assets/generated/api/elm"
         return ()
       otherwise -> do
         putStrLn $ "Monobank | Not tokenized API access available for currencies only"
@@ -31,3 +33,9 @@ main =
         --putStrLn $ show $ mcurrs
         mapM_ MBApi.showCurrencyPair mcurrs
         return ()
+
+
+spec :: Spec
+spec =
+  Spec ["MonobankApi"]
+       (defElmImports : generateElmForAPI (Proxy :: Proxy MBApi.MonobankAPI))

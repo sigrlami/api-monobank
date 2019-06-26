@@ -14,6 +14,7 @@ import           Data.Aeson.TH
 import           Data.Maybe
 import qualified Data.Text      as T
 import           Data.Time
+import           Elm            (ElmType)
 import           GHC.Generics
 
 import           Monobank.Utils
@@ -30,7 +31,7 @@ data Account =
     , acCreditLimit  :: Int       -- ^ Current credit limit available to user
     , acCurrencyCode :: Int       -- ^ Currency of the account
     , acCashbackType :: T.Text    -- ^
-    } deriving (Eq, Show, Generic)
+    } deriving (Eq, Show, Generic, ElmType)
 
 instance FromJSON Account where
    parseJSON = genericParseJSON opts
@@ -41,7 +42,7 @@ data User =
   User
     { uName     :: T.Text    -- ^ User's full name
     , uAccounts :: [Account] -- ^ List of user accounts, by currency type
-    } deriving (Eq, Show)
+    } deriving (Eq, Show, Generic, ElmType)
 
 instance FromJSON User where
   parseJSON =
@@ -64,7 +65,7 @@ data Statement =
     , stComissionRate   :: Int      -- ^
     , stCashbackAmount  :: Int      -- ^
     , balance           :: Int      -- ^
-    } deriving (Eq, Show, Generic, FromJSON)
+    } deriving (Eq, Show, Generic, FromJSON, ElmType)
 
 data Currency =
   Currency
@@ -73,7 +74,7 @@ data Currency =
     , decimalDigits  :: Int
     , symbol         :: String
     , name           :: String
-    } deriving (Eq, Show)
+    } deriving (Eq, Show, Generic, ElmType)
 
 -- | Data type that represents currency pair from Monobank
 --   at spicific time
@@ -85,7 +86,7 @@ data CurrencyPair =
     , cpRateSell      :: Maybe Float   -- ^ Rate to sell currency
     , cpRateBuy       :: Maybe Float   -- ^ Rate to buy currency
     , cpRateCross     :: Maybe Float   -- ^ Rate
-    } deriving (Show)
+    } deriving (Show, Generic, ElmType)
 
 instance FromJSON CurrencyPair where
   parseJSON =

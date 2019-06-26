@@ -26,6 +26,8 @@ library
                      , bytestring
                      , servant
                      , servant-client
+                     , servant-elm
+                     , elm-export
                      , http-client
                      , http-client-tls
   default-language:    Haskell2010
@@ -43,6 +45,7 @@ executable mnb-app
                      , text
                      , time
                      , api-monobank
+                     , servant-elm
   default-language:    Haskell2010
 
 test-suite mnb-app-test

@@ -128,6 +128,6 @@ where you can have date in normal, human-readable form. They are converted to Po
 
 ## Example
 
-Accumulated statement by month for the year. Implemented inside [Monolytics](https://github.com/sigrlami/monolytics) app with data collected by this API.
+Accumulated statement by month for the year. Implemented inside [Monolytics](https://github.com/sigrlami/monolytics) app with data collected by this API client.
 
 ![Balance Chart](assets/balance-chart.png "Balance Chart")

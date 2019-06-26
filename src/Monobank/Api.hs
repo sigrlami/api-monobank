@@ -14,6 +14,7 @@ module Monobank.Api
     , getPersonalInfo'
     , getPersonalStatement'
     , getPersonalStatementFull
+    , MonobankAPI
     ) where
 
 import           Control.Applicative
