@@ -6,6 +6,7 @@ import           Control.Concurrent          (forkIO, threadDelay)
 import           Control.Concurrent.STM.TVar
 import           Control.Monad               (forever)
 import           Data.Char
+import           Data.Maybe
 import qualified Data.Text                   as T
 import           Data.Time.Clock
 import           Elm
@@ -14,6 +15,7 @@ import           System.Environment
 
 import qualified Monobank.Api                as MBApi
 import qualified Monobank.Types              as MBApi
+import qualified Monobank.Utils              as MBApi
 
 --------------------------------------------------------------------------------
 
@@ -47,10 +49,10 @@ spec =
          : toElmTypeSource (Proxy :: Proxy MBApi.Statement)
          : toElmTypeSource (Proxy :: Proxy MBApi.CurrencyPair)
          : toElmDecoderSource (Proxy :: Proxy MBApi.Currency)
-         : toElmDecoderSourceWith (defaultOptions {fieldLabelModifier = withPrefix "u"})  (Proxy :: Proxy MBApi.User)
-         : toElmDecoderSourceWith (defaultOptions {fieldLabelModifier = withPrefix "ac"}) (Proxy :: Proxy MBApi.Account)
-         : toElmDecoderSourceWith (defaultOptions {fieldLabelModifier = withPrefix "st"}) (Proxy :: Proxy MBApi.Statement)
-         : toElmDecoderSourceWith (defaultOptions {fieldLabelModifier = withPrefix "cp"}) (Proxy :: Proxy MBApi.CurrencyPair)
+         : toElmDecoderSourceWith (defaultOptions {fieldLabelModifier = withoutPrefix "u"})  (Proxy :: Proxy MBApi.User)
+         : toElmDecoderSourceWith (defaultOptions {fieldLabelModifier = withoutPrefix "ac"}) (Proxy :: Proxy MBApi.Account)
+         : toElmDecoderSourceWith (defaultOptions {fieldLabelModifier = withoutPrefix "st"}) (Proxy :: Proxy MBApi.Statement)
+         : toElmDecoderSourceWith (defaultOptions {fieldLabelModifier = withoutPrefix "cp"}) (Proxy :: Proxy MBApi.CurrencyPair)
          : generateElmForAPI (Proxy :: Proxy MBApi.MonobankAPI))
 
 
@@ -62,3 +64,7 @@ initCap t =
 
 withPrefix :: T.Text -> T.Text -> T.Text
 withPrefix prefix s = prefix <> initCap s
+
+withoutPrefix :: T.Text -> T.Text -> T.Text
+withoutPrefix prefix s =
+  MBApi.uncapFst' $ fromMaybe s $ T.stripPrefix prefix s

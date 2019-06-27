@@ -63,42 +63,42 @@ decodeCurrency =
 decodeUser : Decoder User
 decodeUser =
     decode User
-        |> required "uUName" string
-        |> required "uUAccounts" (list decodeAccount)
+        |> required "name" string
+        |> required "accounts" (list decodeAccount)
 
 decodeAccount : Decoder Account
 decodeAccount =
     decode Account
-        |> required "acAcId" string
-        |> required "acAcBalance" int
-        |> required "acAcCreditLimit" int
-        |> required "acAcCurrencyCode" int
-        |> required "acAcCashbackType" string
+        |> required "id" string
+        |> required "balance" int
+        |> required "creditLimit" int
+        |> required "currencyCode" int
+        |> required "cashbackType" string
 
 decodeStatement : Decoder Statement
 decodeStatement =
     decode Statement
-        |> required "stStId" string
-        |> required "stStTime" string
-        |> required "stStDescription" string
-        |> required "stStMCC" string
-        |> required "stStHold" bool
-        |> required "stStAmount" int
-        |> required "stStOperationAmount" int
-        |> required "stStCurrency" int
-        |> required "stStComissionRate" int
-        |> required "stStCashbackAmount" int
-        |> required "stBalance" int
+        |> required "id" string
+        |> required "time" string
+        |> required "description" string
+        |> required "mCC" string
+        |> required "hold" bool
+        |> required "amount" int
+        |> required "operationAmount" int
+        |> required "currency" int
+        |> required "comissionRate" int
+        |> required "cashbackAmount" int
+        |> required "balance" int
 
 decodeCurrencyPair : Decoder CurrencyPair
 decodeCurrencyPair =
     decode CurrencyPair
-        |> required "cpCpCurrencyCodeA" decodeCurrency
-        |> required "cpCpCurrencyCodeB" decodeCurrency
-        |> required "cpCpDate" int
-        |> required "cpCpRateSell" (maybe float)
-        |> required "cpCpRateBuy" (maybe float)
-        |> required "cpCpRateCross" (maybe float)
+        |> required "currencyCodeA" decodeCurrency
+        |> required "currencyCodeB" decodeCurrency
+        |> required "date" int
+        |> required "rateSell" (maybe float)
+        |> required "rateBuy" (maybe float)
+        |> required "rateCross" (maybe float)
 
 getBankCurrency : Http.Request (List (CurrencyPair))
 getBankCurrency =
