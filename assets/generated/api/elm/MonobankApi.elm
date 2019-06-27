@@ -51,12 +51,6 @@ type alias CurrencyPair =
     , cpRateCross : Maybe (Float)
     }
 
-decodeUser : Decoder User
-decodeUser =
-    decode User
-        |> required "uName" string
-        |> required "uAccounts" (list decodeAccount)
-
 decodeCurrency : Decoder Currency
 decodeCurrency =
     decode Currency
@@ -66,39 +60,45 @@ decodeCurrency =
         |> required "symbol" string
         |> required "name" string
 
+decodeUser : Decoder User
+decodeUser =
+    decode User
+        |> required "uUName" string
+        |> required "uUAccounts" (list decodeAccount)
+
 decodeAccount : Decoder Account
 decodeAccount =
     decode Account
-        |> required "acId" string
-        |> required "acBalance" int
-        |> required "acCreditLimit" int
-        |> required "acCurrencyCode" int
-        |> required "acCashbackType" string
+        |> required "acAcId" string
+        |> required "acAcBalance" int
+        |> required "acAcCreditLimit" int
+        |> required "acAcCurrencyCode" int
+        |> required "acAcCashbackType" string
 
 decodeStatement : Decoder Statement
 decodeStatement =
     decode Statement
-        |> required "stId" string
-        |> required "stTime" string
-        |> required "stDescription" string
-        |> required "stMCC" string
-        |> required "stHold" bool
-        |> required "stAmount" int
-        |> required "stOperationAmount" int
-        |> required "stCurrency" int
-        |> required "stComissionRate" int
-        |> required "stCashbackAmount" int
-        |> required "balance" int
+        |> required "stStId" string
+        |> required "stStTime" string
+        |> required "stStDescription" string
+        |> required "stStMCC" string
+        |> required "stStHold" bool
+        |> required "stStAmount" int
+        |> required "stStOperationAmount" int
+        |> required "stStCurrency" int
+        |> required "stStComissionRate" int
+        |> required "stStCashbackAmount" int
+        |> required "stBalance" int
 
 decodeCurrencyPair : Decoder CurrencyPair
 decodeCurrencyPair =
     decode CurrencyPair
-        |> required "cpCurrencyCodeA" decodeCurrency
-        |> required "cpCurrencyCodeB" decodeCurrency
-        |> required "cpDate" int
-        |> required "cpRateSell" (maybe float)
-        |> required "cpRateBuy" (maybe float)
-        |> required "cpRateCross" (maybe float)
+        |> required "cpCpCurrencyCodeA" decodeCurrency
+        |> required "cpCpCurrencyCodeB" decodeCurrency
+        |> required "cpCpDate" int
+        |> required "cpCpRateSell" (maybe float)
+        |> required "cpCpRateBuy" (maybe float)
+        |> required "cpCpRateCross" (maybe float)
 
 getBankCurrency : Http.Request (List (CurrencyPair))
 getBankCurrency =
