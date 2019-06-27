@@ -5,11 +5,10 @@ module Main where
 import           Control.Concurrent          (forkIO, threadDelay)
 import           Control.Concurrent.STM.TVar
 import           Control.Monad               (forever)
+import           Data.Char
 import qualified Data.Text                   as T
 import           Data.Time.Clock
-import           Elm                         (toElmDecoderSource,
-                                              toElmEncoderSource,
-                                              toElmTypeSource)
+import           Elm
 import           Servant.Elm
 import           System.Environment
 
@@ -42,14 +41,24 @@ spec :: Spec
 spec =
   Spec ["MonobankApi"]
        (  defElmImports
-         : toElmTypeSource    (Proxy :: Proxy MBApi.User)
-         : toElmTypeSource    (Proxy :: Proxy MBApi.Currency)
-         : toElmTypeSource    (Proxy :: Proxy MBApi.Account)
-         : toElmTypeSource    (Proxy :: Proxy MBApi.Statement)
-         : toElmTypeSource    (Proxy :: Proxy MBApi.CurrencyPair)
-         : toElmDecoderSource (Proxy :: Proxy MBApi.User)
+         : toElmTypeSource (Proxy :: Proxy MBApi.User)
+         : toElmTypeSource (Proxy :: Proxy MBApi.Currency)
+         : toElmTypeSource (Proxy :: Proxy MBApi.Account)
+         : toElmTypeSource (Proxy :: Proxy MBApi.Statement)
+         : toElmTypeSource (Proxy :: Proxy MBApi.CurrencyPair)
          : toElmDecoderSource (Proxy :: Proxy MBApi.Currency)
-         : toElmDecoderSource (Proxy :: Proxy MBApi.Account)
-         : toElmDecoderSource (Proxy :: Proxy MBApi.Statement)
-         : toElmDecoderSource (Proxy :: Proxy MBApi.CurrencyPair)
+         : toElmDecoderSourceWith (defaultOptions {fieldLabelModifier = withPrefix "u"})  (Proxy :: Proxy MBApi.User)
+         : toElmDecoderSourceWith (defaultOptions {fieldLabelModifier = withPrefix "ac"}) (Proxy :: Proxy MBApi.Account)
+         : toElmDecoderSourceWith (defaultOptions {fieldLabelModifier = withPrefix "st"}) (Proxy :: Proxy MBApi.Statement)
+         : toElmDecoderSourceWith (defaultOptions {fieldLabelModifier = withPrefix "cp"}) (Proxy :: Proxy MBApi.CurrencyPair)
          : generateElmForAPI (Proxy :: Proxy MBApi.MonobankAPI))
+
+
+initCap :: T.Text -> T.Text
+initCap t =
+  case T.uncons t of
+    Nothing      -> t
+    Just (c, cs) -> T.cons (Data.Char.toUpper c) cs
+
+withPrefix :: T.Text -> T.Text -> T.Text
+withPrefix prefix s = prefix <> initCap s
