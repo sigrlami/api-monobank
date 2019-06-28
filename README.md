@@ -26,6 +26,7 @@ This will allow monobank clients to log in to your service (for example, in a fi
 In the event of the exploitation of this API as corporate, the bank reserves the right to impose sanctions on the company.
 
 ## Public
+
 General information provided without authorization.
 
 | # |Path           | Type | Params |  Description         | Response | Notes|

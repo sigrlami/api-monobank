@@ -1,0 +1,264 @@
+swagger: "2.0"
+info:
+  title: Monobank open API
+  version: 201906
+  description: API для отримання інформації про виписки та стан особистого рахунку.
+    Для надання доступу потрібно пройти авторизацацію у особистову кабінеті https://api.monobank.ua/
+    та отримати токен для персонального використання.
+
+
+    Якщо у вас є запитання щодо роботи API, запрошуємо до комьюніті у
+    [Telegram-групі](https://t.me/joinchat/FiAEWhDf-QzTqM4wzEtffw).
+
+
+    Якщо у вас є сервіс або додаток і ви хочете централізовано приєднатися до API для надання послуг клієнтам,
+    потрібно підключитися до [корпоративного API](/docs/corporate.html), що має більше можливостей.
+
+
+    Це надасть змогу клієнтам monobank авторизуватись у вашому сервісі (наприклад у фінансовому менеджері)
+    для надання інформації про стан рахунку, або виписки.
+
+
+    У разі виявлення експлуатації цього API в якості корпоративного, банк залишає за собою право накласти санкції на компанію.
+
+
+host: api.monobank.ua
+basePath: /
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /bank/currency:
+    get:
+      tags:
+        - Публічні дані
+      summary: Отримання курсів валют
+      description: Отримати базовий перелік курсів валют monobank. Інформація кешується та оновлюється не частіше 1 разу на 5 хвилин.
+      responses:
+        200:
+          description: Інформація про курс валют
+          schema:
+            $ref: '#/definitions/CurrencyInfo'
+
+  /personal/client-info:
+    get:
+      tags:
+        - Клієнтські персональні дані
+      summary: Інформація про клієнта
+      description: Отримання інформації про клієнта та переліку його рахунків. Обмеження на використання функції не частіше ніж 1 раз у 60 секунд.
+      parameters:
+        - name: X-Token
+          in: header
+          type: string
+          required: true
+          description: Token для особистого доступу до API
+
+      responses:
+        200:
+          description: Statement list
+          schema:
+            $ref: '#/definitions/UserInfo'
+
+  /personal/webhook:
+    post:
+      tags:
+        - Клієнтські персональні дані
+      summary: Встановляння WebHook
+      description: Встановлення URL, на який буде формуватися POST запит, який буде вкладатися запит у форматі `{type:"StatementItem", data:{[StatementItem]}}`.
+        Якщо сервіс клієнта не відповість протягом 5с на команду, сервіс повторить спробу ще через 60 та 600 секунд. Якщо на третью спробу відповідь
+        отримана не буде, функція буде вимкнута.
+      parameters:
+        - name: X-Token
+          in: header
+          type: string
+          required: true
+          description: Token для особистого доступу до API
+        - name: webHookUrl
+          type: string
+          in: body
+          required: true
+          description: The user to create.
+          schema:
+            type: object
+            properties:
+              webHookUrl:
+                type: string
+      responses:
+        200:
+          description: ok
+
+  /personal/statement/{account}/{from}/{to}:
+    get:
+      tags:
+        - Клієнтські персональні дані
+      summary: Виписка
+      description: Отримання виписки за час від {from} до {to} часу в секундах в форматі Unix time.
+        Максимальний час за який можливо отримувати виписку 31 доба (2678400 секунд)
+        Обмеження на використання функції не частіше ніж 1 раз у 60 секунд.
+      parameters:
+        - name: X-Token
+          in: header
+          type: string
+          required: true
+          description: Token для особистого доступу до API
+        - name: account
+          in: path
+          type: string
+          required: true
+          description: Ідентифікатор рахунку з переліку Statement list або 0 - дефолтний рахунок.
+        - name: from
+          description: Початок часу виписки
+          in: path
+          type: string
+          required: true
+          schema:
+            example: 1546304461
+        - name: to
+          description: Останній час виписки (якщо відсутній, буде використовуватись поточний час)
+          in: path
+          type: string
+          required: false
+          schema:
+            type: string
+            example: 1546306461
+      responses:
+        200:
+          description: Statement list
+          schema:
+            $ref: '#/definitions/StatementItems'
+definitions:
+
+  UserInfo:
+    type: object
+    description: Опис клієнта та його рахунків.
+    properties:
+      name:
+        description: Ім'я клієнта
+        type: string
+      webHookUrl:
+        description: URL для отримання інформації про нову транзакцію
+        type: string
+      accounts:
+        type: array
+        description: Перелік доступних рахунків
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Ідентифікатор рахунку
+              example: kKGVoZuHWzqVoZuH
+            balance:
+              type: number
+              format: int64
+              description: Баланс рахунку в мінімальних одиницях валюти (копійках, центах)
+              example: 10000000
+            creditLimit:
+              type: number
+              format: int64
+              description: Кредитний ліміт
+              example: 10000000
+            currencyCode:
+              type: number
+              format: int32
+              description: Код валюти рахунку відповідно ISO 4217
+              example: 980
+            cashbackType:
+              type: string
+              description: Тип кешбеку який нараховується на рахунок
+              enum: [None, UAH, Miles]
+              example: UAH
+  StatementItems:
+    type: array
+    description: Перелік транзакцій за вказанний час
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+          example: ZuHWzqkKGVo=
+        time:
+          type: number
+          format: int32
+          example: 1554466347
+        description:
+          type: string
+          example: Покупка щастя
+        mcc:
+          type: number
+          format: int32
+          example: 7997
+        hold:
+          type: boolean
+          example: false
+        amount:
+          type: number
+          format: int64
+          example: -95000
+        operationAmount:
+          type: number
+          format: int64
+          example: -95000
+        currencyCode:
+          type: number
+          format: int32
+          example: 980
+        commissionRate:
+          type: number
+          format: int64
+          example: 0
+        cashbackAmount:
+          type: number
+          format: int64
+          example: 19000
+        balance:
+          type: number
+          format: int64
+          example: 10050000
+
+  CurrencyInfo:
+    type: array
+    description: Перелік курсів. Кожна валютна пара може мати одне і більше полів з  rateSell, rateBuy, rateCross.
+    items:
+      type: object
+      properties:
+        currencyCodeA:
+          type: number
+          format: int32
+          example: 840
+        currencyCodeB:
+          type: number
+          format: int32
+          example: 980
+        date:
+          type: number
+          format: int32
+          example: 1552392228
+        rateSell:
+          type: number
+          format: float
+          example: 27.0
+        rateBuy:
+          type: number
+          format: float
+          example: 27.2
+        rateCross:
+          type: number
+          format: float
+          example: 27.1
+  Error:
+    type: object
+    properties:
+      errorDescription:
+        type: string
+        description: Опис помилки для людини, для автоматичного оброблення потрібно аналізувати
+          HTTP код відповіді (200, 404, 429 та інші)
+
+tags:
+  - name: Публічні дані
+    description: Загальна інформація що надається без авторизації.
+  - name: Клієнтські персональні дані
+    description: Інформація, що надається тільки за наявстю tokenа доступу, який клієнт може отримати в особистому кабінеті https://api.monobank.ua/
