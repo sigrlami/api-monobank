@@ -11,6 +11,7 @@ Haskell client for Monobank API [services](https://api.monobank.ua/docs/).
 3. [Private API](#private)
 4. [Using library](#use)
 5. [Example](#example)
+6. [Say Thanks](#contributions)
 
 ## Introduction
 
@@ -128,6 +129,15 @@ where you can have date in normal, human-readable form. They are converted to Po
 
 ## Example
 
-Accumulated statement by month for the year. Implemented inside [Monolytics](https://github.com/sigrlami/monolytics) app with data collected by this API.
+Accumulated statement by month for the year. Implemented inside [Monolytics](https://github.com/sigrlami/monolytics) app with data collected by this API client.
 
 ![Balance Chart](assets/balance-chart.png "Balance Chart")
+
+## Contributions
+
+Say thanks, send tip:
+
+- `monobank`: https://send.monobank.com.ua/3BNNDq3CV
+- `btc`:      39oVXpsgsyW8ZgzsnX3sV7HLdtXWfT96qN
+- `eth`:      0x9cDBA6bb44772259B3A3fb89cf233A147a720f34
+- `xlm`:      GD2FROTYXYSNOQQREYXHCXVOYWV556EM6PAHMVUHJNJEUYTUXUSNUZQ3
