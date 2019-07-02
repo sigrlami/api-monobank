@@ -57,7 +57,7 @@ type MonobankAPI =
   -- GET /personal/statement/{account}/{from}/{to}
   :<|> "personal"
     :> "statement"
-    :> Header  "X-Token" T.Text
+    :> Header  "X-Token" Token
     :> Capture "account" T.Text
     :> Capture "from"    T.Text
     :> Capture "to"      T.Text
@@ -88,21 +88,21 @@ getCurrencyRates' = do
 
 -- | Ger bank user personal information
 -- |
-getPersonalInfo' :: Maybe T.Text                        -- ^ unique user token
+getPersonalInfo' :: Maybe Token                        -- ^ unique user token
                  -> IO (Either ServantError User)
 getPersonalInfo' tkn = do
   mgr <- newManager tlsManagerSettings
   let env = ClientEnv mgr host Nothing
   runClientM (getPersonalInfo tkn) env
-  where
-    host = (BaseUrl Https endpoint 443 "")
+    where
+      host = (BaseUrl Https endpoint 443 "")
 
 
 -- | Receive an extract for the time from {to} to {to} time in seconds Unix time format.
 -- | The maximum time for which it is possible to extract an extract is 31 days
 -- | (2678400 seconds) Limit on the use of the function no more than 1 time in 60 seconds.
 --
-getPersonalStatement' :: Maybe T.Text
+getPersonalStatement' :: Maybe Token
                       -> T.Text
                       -> T.Text
                       -> T.Text
@@ -114,7 +114,7 @@ getPersonalStatement' tkn accM fromM toM = do
   where
     host = (BaseUrl Https endpoint 443 "")
 
-getPersonalStatement'' :: Maybe T.Text
+getPersonalStatement'' :: Maybe Token
                       -> T.Text
                       -> T.Text
                       -> T.Text
@@ -126,8 +126,8 @@ getPersonalStatement'' tknM acc from to = do
       to'   = T.init . T.pack . show . utcTimeToPOSIXSeconds $ (read (T.unpack to)   :: UTCTime)
   putStrLn $ show from'
   runClientM (getPersonalStatement tknM acc from' to') env
-  where
-    host  = (BaseUrl Https endpoint 443 "")
+    where
+      host  = (BaseUrl Https endpoint 443 "")
 
 --------------------------------------------------------------------------------
 

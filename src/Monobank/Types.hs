@@ -20,7 +20,18 @@ import           Monobank.Utils
 
 --------------------------------------------------------------------------------
 
--- | Wrapper for user token from Developer's Dashboard, https://api.monobank.ua/
+-- | List of errors that are coming from
+--
+data APIError = ErrInvalidAccount
+              | ErrUknownToken
+              | ErrTooManyRequests
+              | ErrInternal
+              | ErrMissingRequiredField
+              | ErrPeriod31              --
+              | ErrValueGreater          --
+
+-- | Wrapper for user token from Developer's Dashboard
+--   https://api.monobank.ua/
 type Token = T.Text
 
 data Account =
