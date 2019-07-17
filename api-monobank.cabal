@@ -1,61 +1,81 @@
-name:                api-monobank
-version:             0.1.2.0
--- synopsis:
-description:         Api client for popular Ukrainian bank - Monobank
-homepage:            https://github.com/sigrlami/api-monobank#readme
-license:             MIT
-license-file:        LICENSE
-author:              Sergey Bushnyak
-maintainer:          sergey.bushnyak@sigrlami.eu
-copyright:           Copyright: (c) 2019 Sergey Bushnyak
-category:            Web
-build-type:          Simple
-extra-source-files:  README.md
-cabal-version:       >=1.10
+-- This file has been generated from package.yaml by hpack version 0.27.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: df8ffc7c352aabe40a46564e66c221e6ac18576d5b8bfac95af6b8ecbece3c75
 
-library
-  hs-source-dirs:      src
-  exposed-modules:     Monobank.Api
-                     , Monobank.Types
-                     , Monobank.Utils
-  build-depends:       base >= 4.7 && < 5
-                     , aeson
-                     , text
-                     , time
-                     , http-conduit
-                     , bytestring
-                     , servant
-                     , servant-client
-                     , http-client
-                     , http-client-tls
-  default-language:    Haskell2010
+name:           api-monobank
+version:        0.1.2.0
+description:    Api client for popular Ukrainian bank - Monobank
+category:       Web
+homepage:       https://github.com/sigrlami/api-monobank#readme
+bug-reports:    https://github.com/sigrlami/api-monobank/issues
+author:         Sergey Bushnyak
+maintainer:     sergey.bushnyak@sigrlami.eu
+copyright:      Copyright: (c) 2019 Sergey Bushnyak
+license:        MIT
+license-file:   LICENSE
+build-type:     Simple
+cabal-version:  >= 1.10
 
-executable mnb-app
-  hs-source-dirs:      app
-  main-is:             Main.hs
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base
-                     , bytestring
-                     , http-conduit
-                     , http-client
-                     , aeson
-                     , stm
-                     , text
-                     , time
-                     , api-monobank
-  default-language:    Haskell2010
-
-test-suite mnb-app-test
-  type:                exitcode-stdio-1.0
-  hs-source-dirs:      tests
-  main-is:             Spec.hs
-  build-depends:       base
-                     , bytestring
-                     , hs-coindesk-api
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  default-language:    Haskell2010
-
+extra-source-files:
+    README.md
 
 source-repository head
-  type:     git
+  type: git
   location: https://github.com/sigrlami/api-monobank
+
+library
+  exposed-modules:
+      Monobank.Api
+      Monobank.Types
+      Monobank.Utils
+  other-modules:
+      Paths_api_monobank
+  hs-source-dirs:
+      src
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , http-client
+    , http-client-tls
+    , http-conduit
+    , servant
+    , servant-client
+    , text
+    , time
+  default-language: Haskell2010
+
+executable mnb-app
+  main-is: Main.hs
+  other-modules:
+      Paths_api_monobank
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , api-monobank
+    , base
+    , bytestring
+    , http-client
+    , http-conduit
+    , stm
+    , text
+    , time
+  default-language: Haskell2010
+
+test-suite mnb-app-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_api_monobank
+  hs-source-dirs:
+      tests
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base
+    , bytestring
+    , hs-coindesk-api
+  default-language: Haskell2010

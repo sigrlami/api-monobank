@@ -1,0 +1,57 @@
+name: api-monobank
+version: '0.1.2.0'
+description: Api client for popular Ukrainian bank - Monobank
+category: Web
+author: Sergey Bushnyak
+maintainer: sergey.bushnyak@sigrlami.eu
+copyright: ! 'Copyright: (c) 2019 Sergey Bushnyak'
+license: MIT
+github: sigrlami/api-monobank
+extra-source-files:
+- README.md
+dependencies:
+- bytestring
+library:
+  source-dirs: src
+  exposed-modules:
+  - Monobank.Api
+  - Monobank.Types
+  - Monobank.Utils
+  dependencies:
+  - base >=4.7 && <5
+  - aeson
+  - text
+  - time
+  - http-conduit
+  - servant
+  - servant-client
+  - http-client
+  - http-client-tls
+executables:
+  mnb-app:
+    main: Main.hs
+    source-dirs: app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - base
+    - http-conduit
+    - http-client
+    - aeson
+    - stm
+    - text
+    - time
+    - api-monobank
+tests:
+  mnb-app-test:
+    main: Spec.hs
+    source-dirs: tests
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - base
+    - hs-coindesk-api
