@@ -34,6 +34,12 @@ data APIError = ErrInvalidAccount
 --   https://api.monobank.ua/
 type Token = T.Text
 
+data TokenRequest =
+  TokenRequest
+    { tokenRequestId :: T.Text -- ^ token id
+    , acceptUrl      :: T.Text -- ^ url to show client as QR or ridrect
+    } deriving (Eq, Show, Generic, FromJSON, ToJSON)
+
 data Account =
   Account
     { acId           :: T.Text    -- ^

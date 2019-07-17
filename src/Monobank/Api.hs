@@ -12,7 +12,9 @@ module Monobank.Api
     ( getCurrencies
     , getCurrencyRates'
     , getPersonalInfo'
+    , getPersonalInfoSigned'
     , getPersonalStatement'
+    , getPersonalStatementSigned'
     , getPersonalStatementFull
     ) where
 
@@ -75,6 +77,66 @@ getPersonalStatement :: Maybe T.Text -> T.Text -> T.Text -> T.Text -> ClientM St
  :<|> getPersonalStatement ) = client monobankAPI
 
 --------------------------------------------------------------------------------
+-- Corporate API description https://api.monobank.ua/docs/corporate.html
+
+type MonobankCorporateAPI =
+
+  -- POST /personal/auth/request
+       "personal"
+    :> "auth"
+    :> "request"
+    :> Header  "X-Key-Id"      T.Text
+    :> Header  "X-Time"        T.Text
+    :> Header  "X-Permissions" T.Text
+    :> Header  "X-Sign"        T.Text
+    :> Header  "X-Callback"    T.Text
+    :> Post '[JSON] (Either String TokenRequest)
+
+  -- Get /personal/auth/request
+  :<|> "personal"
+    :> "auth"
+    :> "request"
+    :> Header  "X-Key-Id"      T.Text
+    :> Header  "X-Time"        T.Text
+    :> Header  "X-Permissions" T.Text
+    :> Header  "X-Sign"        T.Text
+    :> Get '[JSON] (Either String TokenRequest)
+
+  -- GET /personal/client-info
+  :<|> "personal"
+    :> "client-info"
+    :> Header  "X-Key-Id"      T.Text
+    :> Header  "X-Time"        T.Text
+    :> Header  "X-Permissions" T.Text
+    :> Header  "X-Sign"        T.Text
+    :> Get '[JSON] User
+
+  -- GET /personal/statement/{account}/{from}/{to}
+  :<|> "personal"
+    :> "statement"
+    :> Header  "X-Key-Id"      T.Text
+    :> Header  "X-Time"        T.Text
+    :> Header  "X-Permissions" T.Text
+    :> Header  "X-Sign"        T.Text
+    :> Capture "account"       T.Text
+    :> Capture "from"          T.Text
+    :> Capture "to"            T.Text
+    :> Get '[JSON] Statement
+
+monobankCorporateAPI :: Proxy MonobankCorporateAPI
+monobankCorporateAPI = Proxy
+
+-- Derive call functions for the api
+initializeAuth             :: Maybe T.Text -> Maybe T.Text -> Maybe T.Text -> Maybe T.Text -> Maybe T.Text -> ClientM (Either String TokenRequest)
+requestAuth                :: Maybe T.Text -> Maybe T.Text -> Maybe T.Text -> Maybe T.Text -> ClientM (Either String TokenRequest)
+getPersonalInfoSigned      :: Maybe T.Text -> Maybe T.Text -> Maybe T.Text -> Maybe T.Text -> ClientM User
+getPersonalStatementSigned :: Maybe T.Text -> Maybe T.Text -> Maybe T.Text -> Maybe T.Text -> T.Text -> T.Text -> T.Text -> ClientM Statement
+(     initializeAuth
+ :<|> requestAuth
+ :<|> getPersonalInfoSigned
+ :<|> getPersonalStatementSigned ) = client monobankCorporateAPI
+
+--------------------------------------------------------------------------------
 
 -- | Get a basic list of monobank currency rates
 -- |
@@ -115,10 +177,10 @@ getPersonalStatement' tkn accM fromM toM = do
     host = (BaseUrl Https endpoint 443 "")
 
 getPersonalStatement'' :: Maybe Token
-                      -> T.Text
-                      -> T.Text
-                      -> T.Text
-                      -> IO (Either ServantError Statement)
+                       -> T.Text
+                       -> T.Text
+                       -> T.Text
+                       -> IO (Either ServantError Statement)
 getPersonalStatement'' tknM acc from to = do
   mgr <- newManager tlsManagerSettings
   let env   = ClientEnv mgr host Nothing
@@ -128,6 +190,10 @@ getPersonalStatement'' tknM acc from to = do
   runClientM (getPersonalStatement tknM acc from' to') env
     where
       host  = (BaseUrl Https endpoint 443 "")
+
+getPersonalInfoSigned' = undefined
+
+getPersonalStatementSigned' = undefined
 
 --------------------------------------------------------------------------------
 
@@ -149,7 +215,18 @@ getCurrencies = do
     Right val -> do
       return $ val
 
-
 -- Get Personal Statement from beginning
--- 12 months will take 12 minutes
-getPersonalStatementFull = undefined
+-- 12 months will take 12 minutes,
+getPersonalStatementFull :: Maybe Token
+                         -> T.Text
+                         -> T.Text
+                         -> T.Text
+                         -> IO (Either String Statement)
+getPersonalStatementFull tknM acc from to = do
+  let estimatedDownloadTime = 12 -- due to API restrictions, we can make only 1 call per minute
+  putStrLn $ "monobank-api: due to API restrictions, we can make only 1 call per minute"
+  putStrLn $ "              operation will some time, approx ~ " ++ (show estimatedDownloadTime) ++ " min"
+
+  -- TODO: do actual calls respetively to API restrictions
+
+  return $ Left "Error"
